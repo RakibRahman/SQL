@@ -72,3 +72,78 @@ CREATE TABLE celebs (
 4. DEFAULT columns take an additional argument that will be the assumed value for an inserted row if the new row does not specify a value for that column.
 
 ---
+
+# DISTINCT
+`DISTINCT` is used to return unique values in the output. It filters out all duplicate values in the specified column(s).
+```
+SELECT DISTINCT tools 
+FROM inventory;
+
+SELECT DISTINCT course_id, exercise_id FROM courses;
+```
+---
+# WHERE
+The `WHERE` clause filters the result set to only include rows where the following condition is true.
+```
+SELECT *
+FROM students
+WHERE age > 8;
+```
+
+Comparison operators used with the WHERE clause are:
+
+    = equal to
+    != not equal to
+    > greater than
+    < less than
+    >= greater than or equal to
+    <= less than or equal to
+
+---
+
+# LIKE
+`LIKE` is a special operator used with the `WHERE` clause to search for a specific pattern in a column.
+```
+SELECT * from names;
+WHERE first_name LIKE 'r_b' //it will look for columns whrer name starts with 'r' and ends with 'b'
+```
+_ means you can substitute any individual character.
+
+% is a wildcard character that matches zero or more missing letters in the pattern. For example:
+
+    A% matches all movies with names that begin with letter ‘A’
+    %a matches all movies that end with ‘a’
+```
+SELECT * 
+FROM movies
+WHERE name LIKE 'A%'
+```
+We can also use % both before and after a pattern:
+
+```
+SELECT * 
+FROM movies 
+WHERE name LIKE '%man%';
+```
+if a patterns contains '%' or '_' , we can use escape character \ to include it
+```
+SELECT *
+FROM books
+WHERE title LIKE '% 100\%';
+```
+Here, any movie that contains the word ‘man’ in its name will be returned in the result.
+---
+
+# Is Null
+Unknown or missing values are indicated by NULL.It is not possible to test for NULL values with comparison operators, such as = and !=. 
+
+to test for NULL values we can use:
+
+    IS NULL // contains value
+    IS NOT NULL //value is missing
+```
+SELECT name
+FROM people 
+WHERE address IS NOT NULL;
+```
+---
