@@ -147,3 +147,91 @@ FROM people
 WHERE address IS NOT NULL;
 ```
 ---
+
+
+# BETWEEN
+
+The `BETWEEN` operator is used in a WHERE clause to filter the result set within a certain range.
+
+```
+SELECT * FROM students
+WHERE year BETWEEN 1990 AND 1999;
+WHERE name BETWEEN 'A' AND 'J'; // in this statement BEETWEEN filters the result set only to include names that begin with 'A' ,upto but not including 'J'. 
+
+```
+---
+
+# AND & OR Operator
+ To combine multiple conditions in a `WHERE`clause to make the result set more specific and useful we can use `AND` or `OR`  operator.
+
+ With `AND`, both conditions must be true for the row to be included in the result.
+ `OR` operator displays a row if any condition is true.
+
+ ```
+SELECT * FROM results
+WHERE year BETWEEN 1990 AND 1999 AND grade = 'a+';
+
+SELECT * FROM schools
+WHERE year < 1985 AND type = 'public';
+
+
+
+SELECT *
+FROM students
+WHERE year > 2014
+   OR grade = 'D';
+ ```
+ ---
+
+# IN Operator
+The IN operator allows the user to specify multiple values in the WHERE clause.
+```
+SELECT *
+FROM inventory
+WHERE item_name IN ('plunger', 'soap', 'wipes'); // this statement will return result set where item_name is equal to  'plunger', 'soap', 'wipes'.
+
+
+SELECT *
+FROM customers
+WHERE country IN (
+  SELECT country
+  FROM suppliers
+);
+
+
+```
+---
+
+ # ORDER BY
+`ORDER BY` clause is used to sort the results.
+```
+SELECT *
+FROM students
+ORDER BY name; // sort every from A through Z by students name;
+
+SELECT *
+FROM students
+WHERE grade = 'A+'
+ORDER BY pass_year DESC;
+
+
+SELECT year, name
+FROM students
+ORDER BY year ASC, name DESC; // with multiple columns?
+```
+
+`DESC` is a keyword used in ORDER BY to sort the results in descending order (high to low or Z-A).
+
+`ASC` is a keyword used in ORDER BY to sort the results in ascending order (low to high or A-Z).
+
+
+---
+
+# LIMIT
+`LIMIT` is a clause that lets you specify the maximum number of rows the result set will have.
+
+```
+SELECT *
+FROM students
+LIMIT 10;
+```
