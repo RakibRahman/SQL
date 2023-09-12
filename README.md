@@ -235,3 +235,85 @@ SELECT *
 FROM students
 LIMIT 10;
 ```
+
+# CASE
+A `CASE` statement allows us to create different outputs based on condition. It's the if-else of SQL.
+
+```
+select name,
+CASE
+  WHEN grade = 'A+' THEN 'Fantastic' 
+  WHEN grade = 'F' THEN 'Fail'
+  ELSE 'Absent'
+END // The CASE statement must end with END.
+END AS 'Review' //rename column
+FROM students;
+```
+
+# Aggregate Functions
+Calculations performed on multiple rows of a table are called `aggregates`.
+some important aggregates:
+
+- COUNT(): count the number of rows
+   ```
+   SELECT COUNT (*) FROM fake_apps // * - count every row
+   WHERE price = 0.0;
+
+   COUNT() is used to take a name of a column, and counts the number of non-empty values in that column
+   ```
+- SUM(): the sum of the values in a column
+   ```
+   SELECT SUM(downloads)
+   FROM fake_apps;
+
+    use COUNT() when you want to count how many rows contain a non-empty value for a specified column. Use SUM() when you want to get the total sum of all values in a column.
+   ```
+- MAX()/MIN(): the largest/smallest value
+   ```
+   SELECT MAX(downloads)
+   FROM fake_apps;
+
+   SELECT MIN(downloads)
+   FROM fake_apps;
+   ```
+- AVG(): the average of the values in a column
+   ```
+   SELECT AVG(downloads)
+   FROM fake_apps;
+   ```
+- ROUND(): round the values in the column
+
+`ROUND()` function takes two arguments inside the parenthesis:
+
+- a column name
+- an integer
+It rounds the values in the column to the number of decimal places specified by the integer. 
+   ```
+SELECT ROUND(price, 0)
+FROM fake_apps;
+
+SELECT ROUND(AVG(price), 2)
+FROM fake_apps;
+
+   ```
+
+# GROUP BY
+GROUP BY is a clause in SQL that is used with aggregate functions. It is used in collaboration with the SELECT statement to arrange identical data into groups.
+
+The GROUP BY statement comes after any WHERE statements, but before ORDER BY or LIMIT.
+
+```
+SELECT year,
+   AVG(price)
+FROM app_list
+GROUP BY year
+ORDER BY year;
+
+SELECT price, COUNT(*) 
+FROM fake_apps
+GROUP BY price; //The result contains the total number of apps for each price.
+
+SELECT category, SUM(downloads) 
+FROM fake_apps
+GROUP BY category; // calculates the total number of downloads for each category.
+```
