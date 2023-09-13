@@ -317,3 +317,28 @@ SELECT category, SUM(downloads)
 FROM fake_apps
 GROUP BY category; // calculates the total number of downloads for each category.
 ```
+
+# HAVING
+`HAVING` clause  allows you to filter which groups to include and which to exclude.
+
+- When we want to limit the results of a query based on values of the individual rows, use WHERE.
+- When we want to limit the results of a query based on an aggregate property, use HAVING.
+
+`HAVING` statement always comes after GROUP BY, but before ORDER BY and LIMIT.
+
+```
+SELECT price, 
+   ROUND(AVG(downloads)),
+   COUNT(*)
+FROM fake_apps
+GROUP BY price
+HAVING COUNT(*) > 10;
+
+<!-- WHERE & HAVING -->
+
+SELECT genre, ROUND(AVG(score))
+FROM students
+WHERE bill > 500000 
+GROUP BY class
+HAVING COUNT(*) > 5;
+```
