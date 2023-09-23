@@ -342,3 +342,21 @@ WHERE bill > 500000
 GROUP BY class
 HAVING COUNT(*) > 5;
 ```
+
+# Combining Tables with SQL
+We can combine tables in SQL with `JOIN` sequence.
+```
+SELECT * from orders
+JOIN customers
+   ON orders.customer_id = customers.customer_id;
+```
+A `left join` will keep all rows from the first table, regardless of whether there is a matching row in the second table.
+```
+SELECT *
+FROM newspaper
+LEFT JOIN online
+   ON newspaper.id = online.id
+WHERE online.id IS NULL;
+```
+
+# Primary Key vs Foreign Key
