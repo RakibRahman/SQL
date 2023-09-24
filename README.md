@@ -71,6 +71,17 @@ CREATE TABLE celebs (
 
 4. DEFAULT columns take an additional argument that will be the assumed value for an inserted row if the new row does not specify a value for that column.
 
+--- 
+
+# Primary Key vs Foreign Key
+
+Primary keys have a few requirements:
+
+- None of the values can be NULL.
+- Each value must be unique (i.e., you can’t have two customers with the same customer_id in the customers table).
+- A table can not have more than one primary key column.
+
+   When the primary key for one table appears in a different table, it is called a **foreign key**. 
 ---
 
 # DISTINCT
@@ -102,12 +113,14 @@ Comparison operators used with the WHERE clause are:
 ---
 
 # LIKE
+
 `LIKE` is a special operator used with the `WHERE` clause to search for a specific pattern in a column.
+
 ```
 SELECT * from names;
 WHERE first_name LIKE 'r_b' //it will look for columns whrer name starts with 'r' and ends with 'b'
 ```
-_ means you can substitute any individual character.
+ _ means you can substitute any individual character.
 
 % is a wildcard character that matches zero or more missing letters in the pattern. For example:
 
@@ -132,6 +145,7 @@ FROM books
 WHERE title LIKE '% 100\%';
 ```
 Here, any movie that contains the word ‘man’ in its name will be returned in the result.
+
 ---
 
 # Is Null
@@ -146,6 +160,7 @@ SELECT name
 FROM people 
 WHERE address IS NOT NULL;
 ```
+
 ---
 
 
@@ -236,6 +251,8 @@ FROM students
 LIMIT 10;
 ```
 
+---
+
 # CASE
 A `CASE` statement allows us to create different outputs based on condition. It's the if-else of SQL.
 
@@ -249,6 +266,7 @@ END // The CASE statement must end with END.
 END AS 'Review' //rename column
 FROM students;
 ```
+---
 
 # Aggregate Functions
 Calculations performed on multiple rows of a table are called `aggregates`.
@@ -288,14 +306,16 @@ some important aggregates:
 - a column name
 - an integer
 It rounds the values in the column to the number of decimal places specified by the integer. 
-   ```
+
+```
 SELECT ROUND(price, 0)
 FROM fake_apps;
 
 SELECT ROUND(AVG(price), 2)
 FROM fake_apps;
 
-   ```
+```
+---
 
 # GROUP BY
 GROUP BY is a clause in SQL that is used with aggregate functions. It is used in collaboration with the SELECT statement to arrange identical data into groups.
@@ -317,6 +337,7 @@ SELECT category, SUM(downloads)
 FROM fake_apps
 GROUP BY category; // calculates the total number of downloads for each category.
 ```
+---
 
 # HAVING
 `HAVING` clause  allows you to filter which groups to include and which to exclude.
@@ -342,14 +363,18 @@ WHERE bill > 500000
 GROUP BY class
 HAVING COUNT(*) > 5;
 ```
+---
 
-# Combining Tables with SQL
-We can combine tables in SQL with `JOIN` sequence.
+# JOIN - Combining Tables with SQL
+We can combine tables in SQL with `JOIN` sequence. `INNER JOIN`  is the default join.
 ```
 SELECT * from orders
 JOIN customers
    ON orders.customer_id = customers.customer_id;
 ```
+---
+
+# LEFT JOIN
 A `left join` will keep all rows from the first table, regardless of whether there is a matching row in the second table.
 ```
 SELECT *
@@ -358,5 +383,87 @@ LEFT JOIN online
    ON newspaper.id = online.id
 WHERE online.id IS NULL;
 ```
+---
 
-# Primary Key vs Foreign Key
+# RIGHT JOIN
+A `right join` will keep all rows from the second(right) table, regardless of whether there is a matching row in the first(left) table.
+```
+SELECT column_name(s)
+FROM table_1
+RIGHT JOIN table_2
+  ON table_1.column_name = table_2.column_name;
+```
+
+---
+
+# CROSS JOIN
+`CROSS JOIN`  clause is used when we need to compare each row of a table to a list of values or  to combine all rows of one table with all rows of another table.
+
+ `CROSS JOIN`  don’t require an ON statement as we're not really joining on any columns!
+
+```
+SELECT shirts.shirt_color,
+   pants.pants_color
+FROM shirts
+CROSS JOIN pants;
+
+
+SELECT shirts.shirt_color,
+pants.pants_color,
+socks.sock_color
+FROM shirts
+CROSS JOIN pants
+CROSS JOIN socks;
+
+If the tables had 3 shirts, 2 pants, and 6 socks, then the result of this CROSS JOIN will give
+
+3 x 2 x 6 = 36 combinations, or 36 total rows.
+```
+
+---
+
+# UNION
+
+The UNION command combines the results of two or more SELECT queries. 
+
+```
+SELECT * from newspaper
+UNION
+SELECT * from online;
+```
+
+SQL has strict rules for appending data:
+
+- Tables must have the same number of columns.
+- The columns must have the same data types in the same order as the first table.
+
+When you combine tables with UNION, duplicate rows will be excluded.
+
+---
+
+# WITH
+
+`WITH` clause can store the result of a query using an alias;
+
+```
+WITH temporary_students AS (
+   SELECT *
+   FROM students
+)
+SELECT *
+FROM temporary_students
+WHERE grade = 'A+';
+
+
+WITH previous_query AS (
+  SELECT customer_id,
+   COUNT(subscription_id) AS 'subscriptions'
+FROM orders
+GROUP BY customer_id
+)
+SELECT  customers.customer_name, 
+   previous_query.subscriptions from previous_query
+JOIN customers
+ON previous_query.customer_id = customers.customer_id;
+
+```
