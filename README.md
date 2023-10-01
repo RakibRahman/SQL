@@ -138,6 +138,31 @@ SELECT *
 FROM movies 
 WHERE name LIKE '%man%';
 ```
+```
+SELECT * FROM Customers
+WHERE City LIKE 'a%b'; //column start with 'a' and ends with 'b'
+
+
+SELECT * FROM Customers
+WHERE City LIKE '[acs]%'; //Select all records where the first letter of the City is an "a" or a "c" or an "s".
+
+
+SELECT * FROM Customers
+WHERE City LIKE '[a-f]%'; //Select all records where the first letter of the City starts with anything from an "a" to an "f". 
+
+
+SELECT * FROM Customers
+WHERE City LIKE '[!acs]%'; //Select all records where the first letter of the City is NOT an "a" or a "c" or an "f".
+
+ //with regular expression
+ 
+SELECT distinct city from station
+where city regexp  '^[aeiouAEIOU].'; CITY names starting with vowels (a, e, i, o, u)
+
+SELECT distinct city from station
+where city regexp  '[aeiouAEIOU]$'; //CITY names ending with vowels (a, e, i, o, u)
+```
+
 if a patterns contains '%' or '_' , we can use escape character \ to include it
 ```
 SELECT *
@@ -213,7 +238,7 @@ WHERE country IN (
   FROM suppliers
 );
 
-
+select distinct city from station where left (city , 1) in ('a','e','i','o','u') and right (city , 1) in ('a','e','i','o','u');
 ```
 ---
 
