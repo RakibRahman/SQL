@@ -99,6 +99,10 @@ The `WHERE` clause filters the result set to only include rows where the followi
 SELECT *
 FROM students
 WHERE age > 8;
+
+SELECT ROUND(LONG_W,4) from STATION
+WHERE lat_n = (SELECT MIN(lat_n) from STATION
+WHERE LAT_N > 38.7780); 
 ```
 
 Comparison operators used with the WHERE clause are:
@@ -491,4 +495,31 @@ SELECT  customers.customer_name,
 JOIN customers
 ON previous_query.customer_id = customers.customer_id;
 
+
+WITH AGGREGATE_STATION AS (
+  SELECT MIN(COMMISSION) as [a],
+          MAX(COMMISSION) as [b]
+  FROM AGENTS)
+  
+  select * from AGGREGATE_STATION;
+
+<!-- MYSQL -->
+  WITH AGGREGATE_STATION AS (
+  SELECT MIN(LAT_N) as a,
+          MIN(LONG_W) as b,
+          MAX(LAT_N) as c,
+          MAX(LONG_W) as d
+  FROM STATION)
+  
+  select ROUND(ABS(a-c)+ABS(b-d),4) from AGGREGATE_STATION;
+
+
+  WITH AGGREGATE_STATION AS (
+  SELECT MIN(LAT_N) as a,
+          MIN(LONG_W) as c,
+          MAX(LAT_N) as b,
+          MAX(LONG_W) as d
+  FROM STATION)
+  
+  select ROUND(SQRT(POW(b-a,2)+POW(d-c,2)),4) from AGGREGATE_STATION;                               
 ```
