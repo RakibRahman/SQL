@@ -22,6 +22,7 @@ CREATE TABLE boards (
 CREATE TABLE board_users (
     board_id INTEGER REFERENCES boards(id),
     user_id INTEGER REFERENCES users(id),
+	role VARCHAR(50) CHECK (role IN ('admin', 'moderator', 'member')),
     PRIMARY KEY (board_id, user_id)
 );
 
@@ -41,7 +42,7 @@ CREATE TABLE tasks (
     title VARCHAR(255) NOT NULL,
     description TEXT,
     status VARCHAR(50) CHECK (status IN ('todo', 'in_progress', 'done','completed','stuck')),
-	priority VARCHAR(50) CHECK (status IN ('normal', 'high', 'medium','low')),
+	priority VARCHAR(50) CHECK (priority IN ('normal', 'high', 'medium','low')),
     column_id UUID REFERENCES columns(id),
     creator_id UUID REFERENCES users(id),
     board_id UUID REFERENCES boards(id),
